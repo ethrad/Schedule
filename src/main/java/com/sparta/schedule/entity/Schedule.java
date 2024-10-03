@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -15,19 +15,21 @@ public class Schedule {
     private String username;
     private String description;
     private int password;
-    private LocalDateTime createAt;
-    private LocalDateTime updateAt;
+    private LocalDate createAt;
+    private LocalDate updateAt;
 
     public void update(String username, String description, int password) {
         this.username = username;
         this.description = description;
         this.password = password;
-        this.updateAt = updateAt; // 현재 시간 가져와서 설정
+        this.createAt = LocalDate.now();
+        this.updateAt = LocalDate.now();
     }
 
     public Schedule(ScheduleRequestDto requestDto) {
         this.username = requestDto.getUsername();
         this.description = requestDto.getDescription();
         this.password = requestDto.getPassword();
+        this.updateAt = LocalDate.now();
     }
 }
