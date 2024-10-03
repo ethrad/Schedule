@@ -1,13 +1,20 @@
 package com.sparta.schedule.repository;
 
+import com.sparta.schedule.dto.ScheduleRequestDto;
+import com.sparta.schedule.dto.ScheduleResponseDto;
 import com.sparta.schedule.entity.Schedule;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 @Repository
@@ -38,5 +45,60 @@ public class ScheduleRepository {
         schedule.setId(id);
 
         return schedule;
+    }
+
+    public List<ScheduleResponseDto> findAll() {
+        // DB 조회
+        String sql = "SELECT * FROM schedule";
+
+        return jdbcTemplate.query(sql, new RowMapper<ScheduleResponseDto>() {
+            @Override
+            public ScheduleResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+                Long id = rs.getLong("id");
+                String username = rs.getString("username");
+                String description = rs.getString("description");
+                return new ScheduleResponseDto(id, username, description);
+            }
+        });
+    }
+
+    public void update(Long id, ScheduleRequestDto requestDto) {
+        String sql = "UPDATE schedule SET username = ?, description = ? WHERE id = ?";
+        jdbcTemplate.update(sql, requestDto.getUsername(), requestDto.getDescription(), id);
+    }
+
+    public void delete(Long id) {
+        String sql = "DELETE FROM schedule WHERE id = ?";
+        jdbcTemplate.update(sql, id);
+    }
+
+    public List<ScheduleResponseDto> findByCondition(String username, LocalDate date){
+        // DB 조회
+        String sql = "SELECT * FROM schedule WHERE username = ? AND date = ?";
+
+        return jdbcTemplate.query(sql, new RowMapper<ScheduleResponseDto>() {
+            @Override
+            public ScheduleResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+                Long id = rs.getLong("id");
+                String username = rs.getString("username");
+                String description = rs.getString("description");
+                return new ScheduleResponseDto(id, username, description);
+            }
+        });
+    }
+
+    public Schedule findById(Long id) {
+        String sql = "SELECT * FROM schedule WHERE id = ?";
+
+        return jdbcTemplate.query(sql, resultSet -> {
+            if (resultSet.next()) {
+                Schedule schedule = new Schedule();
+                schedule.setUsername(resultSet.getString("username"));
+                schedule.setDescription(resultSet.getString("description"));
+                return schedule;
+            } else {
+                return null;
+            }
+        }, id);
     }
 }
