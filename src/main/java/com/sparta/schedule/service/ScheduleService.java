@@ -28,6 +28,16 @@ public class ScheduleService {
         return new ScheduleResponseDto(savedSchedule);
     }
 
+    public ScheduleResponseDto getSchedule(Long id) {
+        // 해당 일정이 DB에 존재하는지 확인
+        Schedule schedule = scheduleRepository.findById(id);
+        if (schedule != null) {
+            return new ScheduleResponseDto(schedule);
+        } else {
+            throw new IllegalArgumentException("선택한 일정이 존재하지 않습니다.");
+        }
+    }
+
     public List<ScheduleResponseDto> getAllSchedules() {
         return scheduleRepository.findAll();
     }
@@ -37,11 +47,10 @@ public class ScheduleService {
     }
 
     public Long updateSchedule(Long id, ScheduleRequestDto requestDto) {
-        // 해당 메모가 DB에 존재하는지 확인
+        // 해당 일정이 DB에 존재하는지 확인
         Schedule schedule = scheduleRepository.findById(id);
         if (schedule != null) {
             scheduleRepository.update(id, requestDto);
-
             return id;
         } else {
             throw new IllegalArgumentException("선택한 일정이 존재하지 않습니다.");
@@ -49,24 +58,16 @@ public class ScheduleService {
     }
 
     public Long deleteSchedule(Long id, String password) {
-        // 해당 메모가 DB에 존재하는지 확인
+        // 해당 일정이 DB에 존재하는지 확인
         Schedule schedule = scheduleRepository.findById(id);
         if (schedule != null) {
+            // 비밀번호가 일치하는지 확인
             if (Objects.equals(password.trim(), schedule.getPassword())) {
                 scheduleRepository.delete(id);
                 return id;
             } else {
                 throw new IllegalArgumentException("비밀번호가 틀렸습니다.");
             }
-        } else {
-            throw new IllegalArgumentException("선택한 일정이 존재하지 않습니다.");
-        }
-    }
-
-    public ScheduleResponseDto getSchedule(Long id) {
-        Schedule schedule = scheduleRepository.findById(id);
-        if (schedule != null) {
-            return new ScheduleResponseDto(schedule);
         } else {
             throw new IllegalArgumentException("선택한 일정이 존재하지 않습니다.");
         }

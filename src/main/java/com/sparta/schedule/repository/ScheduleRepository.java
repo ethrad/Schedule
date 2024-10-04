@@ -47,7 +47,7 @@ public class ScheduleRepository {
     }
 
     public List<ScheduleResponseDto> findAll() {
-        // DB 조회
+        // 모든 일정 조회
         String sql = "SELECT * FROM schedule";
 
         return jdbcTemplate.query(sql, new RowMapper<ScheduleResponseDto>() {

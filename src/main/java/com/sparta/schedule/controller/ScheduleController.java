@@ -34,6 +34,7 @@ public class ScheduleController {
 
     @GetMapping("/schedules/byConditions")
     public List<ScheduleResponseDto> getSchedulesByConditions(@RequestParam(required = false) String username, @RequestParam(required = false) String date) {
+        // 문자열을 LocalDate로 변환
         LocalDate localDate = (date != null && !date.isEmpty()) ? LocalDate.parse(date) : null;
 
         return scheduleService.getSchedulesByConditions(username, localDate);
