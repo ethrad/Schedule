@@ -82,7 +82,7 @@ public class ScheduleRepository {
             sql.append(" AND username = ?");
         }
         if (date != null) {
-            sql.append(" AND createAt = ?");
+            sql.append(" AND updateAt = ?");
         }
 
         return jdbcTemplate.query(con -> {
