@@ -9,10 +9,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -28,14 +25,16 @@ public class ScheduleRepository {
     public Schedule save(Schedule schedule) {
         KeyHolder keyHolder = new GeneratedKeyHolder(); // 기본 키를 반환받기 위한 객체
 
-        String sql = "INSERT INTO memo (username, description, password) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO schedule (username, description, password, createAt, updateAt) VALUES (?, ?, ?, ?, ?)";
         jdbcTemplate.update(con -> {
                     PreparedStatement preparedStatement = con.prepareStatement(sql,
                             Statement.RETURN_GENERATED_KEYS);
 
                     preparedStatement.setString(1, schedule.getUsername());
                     preparedStatement.setString(2, schedule.getDescription());
-                    preparedStatement.setInt(3, schedule.getPassword());
+                    preparedStatement.setString(3, schedule.getPassword());
+                    preparedStatement.setDate(4, Date.valueOf(LocalDate.now())); // createAt
+                    preparedStatement.setDate(5, Date.valueOf(LocalDate.now())); // updateAt
                     return preparedStatement;
                 },
                 keyHolder);
@@ -57,14 +56,16 @@ public class ScheduleRepository {
                 Long id = rs.getLong("id");
                 String username = rs.getString("username");
                 String description = rs.getString("description");
-                return new ScheduleResponseDto(id, username, description);
+                LocalDate createAt = rs.getDate("createAt").toLocalDate();
+                LocalDate updateAt = rs.getDate("updateAt").toLocalDate();
+                return new ScheduleResponseDto(id, username, description, createAt, updateAt);
             }
         });
     }
 
     public void update(Long id, ScheduleRequestDto requestDto) {
-        String sql = "UPDATE schedule SET username = ?, description = ? WHERE id = ?";
-        jdbcTemplate.update(sql, requestDto.getUsername(), requestDto.getDescription(), id);
+        String sql = "UPDATE schedule SET username = ?, description = ?, updateAt =? WHERE id = ?";
+        jdbcTemplate.update(sql, requestDto.getUsername(), requestDto.getDescription(), Date.valueOf(LocalDate.now()), id);
     }
 
     public void delete(Long id) {
@@ -115,8 +116,12 @@ public class ScheduleRepository {
         return jdbcTemplate.query(sql, resultSet -> {
             if (resultSet.next()) {
                 Schedule schedule = new Schedule();
+                schedule.setId(resultSet.getLong("id"));
                 schedule.setUsername(resultSet.getString("username"));
                 schedule.setDescription(resultSet.getString("description"));
+                schedule.setPassword(resultSet.getString("password"));
+                schedule.setCreateAt(resultSet.getDate("createAt").toLocalDate());
+                schedule.setUpdateAt(resultSet.getDate("updateAt").toLocalDate());
                 return schedule;
             } else {
                 return null;
