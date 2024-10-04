@@ -62,4 +62,13 @@ public class ScheduleService {
             throw new IllegalArgumentException("선택한 일정이 존재하지 않습니다.");
         }
     }
+
+    public ScheduleResponseDto getSchedule(Long id) {
+        Schedule schedule = scheduleRepository.findById(id);
+        if (schedule != null) {
+            return new ScheduleResponseDto(schedule);
+        } else {
+            throw new IllegalArgumentException("선택한 일정이 존재하지 않습니다.");
+        }
+    }
 }

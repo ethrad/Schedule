@@ -3,7 +3,6 @@ package com.sparta.schedule.controller;
 import com.sparta.schedule.dto.ScheduleRequestDto;
 import com.sparta.schedule.dto.ScheduleResponseDto;
 import com.sparta.schedule.service.ScheduleService;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -26,6 +25,11 @@ public class ScheduleController {
     @GetMapping("/schedules")
     public List<ScheduleResponseDto> getAllSchedules() {
         return scheduleService.getAllSchedules();
+    }
+
+    @GetMapping("/schedules/{id}")
+    public ScheduleResponseDto getSchedule(@PathVariable Long id) {
+        return scheduleService.getSchedule(id);
     }
 
     @GetMapping("/schedules/byConditions")
