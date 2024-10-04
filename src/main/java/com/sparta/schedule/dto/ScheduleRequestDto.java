@@ -6,5 +6,5 @@ import lombok.Getter;
 public class ScheduleRequestDto {
     private String username;
     private String description;
-    private int password;
+    private String password;
 }

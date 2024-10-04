@@ -14,11 +14,11 @@ public class Schedule {
     private Long id;
     private String username;
     private String description;
-    private int password;
+    private String password;
     private LocalDate createAt;
     private LocalDate updateAt;
 
-    public void update(String username, String description, int password) {
+    public void update(String username, String description, String password) {
         this.username = username;
         this.description = description;
         this.password = password;
