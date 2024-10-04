@@ -72,17 +72,39 @@ public class ScheduleRepository {
         jdbcTemplate.update(sql, id);
     }
 
-    public List<ScheduleResponseDto> findByCondition(String username, LocalDate date){
-        // DB 조회
-        String sql = "SELECT * FROM schedule WHERE username = ? AND date = ?";
+    public List<ScheduleResponseDto> findByConditions(String username, LocalDate date) {
+        // 기본 SQL 쿼리
+        StringBuilder sql = new StringBuilder("SELECT * FROM schedule WHERE 1=1");
 
-        return jdbcTemplate.query(sql, new RowMapper<ScheduleResponseDto>() {
+        // 조건이 있을 때만 쿼리에 추가
+        if (username != null && !username.isEmpty()) {
+            sql.append(" AND username = ?");
+        }
+        if (date != null) {
+            sql.append(" AND createAt = ?");
+        }
+
+        return jdbcTemplate.query(con -> {
+            PreparedStatement ps = con.prepareStatement(sql.toString());
+            int paramIndex = 1;
+
+            if (username != null && !username.isEmpty()) {
+                ps.setString(paramIndex++, username);
+            }
+            if (date != null) {
+                ps.setDate(paramIndex++, java.sql.Date.valueOf(date));
+            }
+
+            return ps;
+        }, new RowMapper<ScheduleResponseDto>() {
             @Override
             public ScheduleResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
                 Long id = rs.getLong("id");
                 String username = rs.getString("username");
                 String description = rs.getString("description");
-                return new ScheduleResponseDto(id, username, description);
+                LocalDate createAt = rs.getDate("createAt").toLocalDate();
+                LocalDate updateAt = rs.getDate("updateAt").toLocalDate();
+                return new ScheduleResponseDto(id, username, description, createAt, updateAt);
             }
         });
     }

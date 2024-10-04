@@ -30,6 +30,10 @@ public class ScheduleService {
         return scheduleRepository.findAll();
     }
 
+    public List<ScheduleResponseDto> getSchedulesByConditions(String username, LocalDate date) {
+        return scheduleRepository.findByConditions(username, date);
+    }
+
     public Long updateSchedule(Long id, ScheduleRequestDto requestDto) {
         // 해당 메모가 DB에 존재하는지 확인
         Schedule schedule = scheduleRepository.findById(id);
