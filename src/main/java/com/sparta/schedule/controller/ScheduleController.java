@@ -20,7 +20,7 @@ public class ScheduleController {
 
     @PostMapping("/schedules")
     public ScheduleResponseDto createSchedule(@RequestBody ScheduleRequestDto requestDto) {
-        return scheduleService.createMemo(requestDto);
+        return scheduleService.createSchedule(requestDto);
     }
 
     @GetMapping("/schedules")
