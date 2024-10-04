@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule Management App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .schedule-card {
+            margin-bottom: 20px;
+        }
+
+        .card-actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Schedule Registration Section -->
+    <h1 class="mt-5">일정 등록</h1>
+    <form id="scheduleForm">
+        <div class="mb-3">
+            <label for="username" class="form-label">사용자 이름</label>
+            <input type="text" class="form-control" id="username" placeholder="사용자 이름을 입력하세요" required>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">일정 내용</label>
+            <textarea class="form-control" id="description" rows="3" placeholder="일정 내용을 입력하세요" required></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">비밀번호</label>
+            <input type="password" class="form-control" id="password" placeholder="비밀번호를 입력하세요" required>
+        </div>
+        <button type="submit" class="btn btn-primary">등록</button>
+    </form>
+
+    <!-- Schedule Search Section -->
+    <h2 class="mt-5">일정 조건 조회</h2>
+    <form id="searchForm" class="mb-4">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <input type="date" id="searchDate" class="form-control" placeholder="날짜 선택">
+            </div>
+            <div class="col-md-6">
+                <input type="text" id="searchUsername" class="form-control" placeholder="작성자명 입력">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-secondary mt-3">검색</button>
+    </form>
+
+    <!-- Schedule List Section -->
+    <h2>전체 일정</h2>
+    <div id="scheduleList" class="row row-cols-1 row-cols-md-2 g-4"></div>
+    <nav aria-label="Page navigation example" class="mt-4">
+        <ul class="pagination" id="pagination">
+            <!-- 페이지네이션 버튼 -->
+        </ul>
+    </nav>
+</div>
+
+<!-- Update Schedule Modal -->
+<div class="modal fade" id="updateScheduleModal" tabindex="-1" aria-labelledby="updateScheduleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateScheduleModalLabel">일정 수정</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="updateScheduleForm">
+                    <div class="mb-3">
+                        <label for="updateUsername" class="form-label">사용자 이름</label>
+                        <input type="text" class="form-control" id="updateUsername" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="updateDescription" class="form-label">일정 내용</label>
+                        <textarea class="form-control" id="updateDescription" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="updatePassword" class="form-label">비밀번호</label>
+                        <input type="password" class="form-control" id="updatePassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">수정</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Schedule Modal -->
+<div class="modal fade" id="deleteScheduleModal" tabindex="-1" aria-labelledby="deleteScheduleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteScheduleModalLabel">일정 삭제</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="deleteScheduleForm">
+                    <!-- 추가된 숨겨진 input 필드 -->
+                    <input type="hidden" id="deleteScheduleId">
+
+                    <div class="mb-3">
+                        <label for="deletePassword" class="form-label">비밀번호</label>
+                        <input type="password" class="form-control" id="deletePassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-danger">삭제</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 일정 등록 API 연결
+    document.getElementById('scheduleForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const data = {
+            username: document.getElementById('username').value,
+            description: document.getElementById('description').value,
+            password: document.getElementById('password').value
+        };
+
+        fetch('/api/schedules', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert('일정이 등록되었습니다.');
+                loadSchedules();  // 일정 등록 후 전체 일정 다시 불러오기
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('일정 등록에 실패했습니다.');
+            });
+    });
+
+    // 전체 일정 불러오기
+    function loadSchedules() {
+        fetch('/api/schedules')
+            .then(response => response.json())
+            .then(data => {
+                const scheduleList = document.getElementById('scheduleList');
+                scheduleList.innerHTML = '';  // 기존 일정 지우기
+
+                data.forEach(schedule => {
+                    const scheduleCard = `
+                        <div class="col">
+                            <div class="card schedule-card">
+                                <div class="card-body">
+                                    <h5 class="card-title">${schedule.username}</h5>
+                                    <p class="card-text">${schedule.description}</p>
+                                    <div class="card-actions">
+                                        <button class="btn btn-primary" onclick="openUpdateModal(${schedule.id})">수정</button>
+                                        <button class="btn btn-danger" onclick="openDeleteModal(${schedule.id})">삭제</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    scheduleList.innerHTML += scheduleCard;
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('일정을 불러오는 데 실패했습니다.');
+            });
+    }
+
+    // 일정 수정 API 연결
+    function openUpdateModal(id) {
+        const updateModal = new bootstrap.Modal(document.getElementById('updateScheduleModal'));
+        document.getElementById('updateScheduleForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const data = {
+                username: document.getElementById('updateUsername').value,
+                description: document.getElementById('updateDescription').value,
+                password: document.getElementById('updatePassword').value
+            };
+
+            fetch(`/api/schedules/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+                .then(response => response.json())
+                .then(() => {
+                    alert('일정이 수정되었습니다.');
+                    updateModal.hide();
+                    loadSchedules();  // 수정 후 전체 일정 다시 불러오기
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('일정 수정에 실패했습니다.');
+                });
+        });
+
+        updateModal.show();
+    }
+
+    // 일정 삭제 모달 열기 함수
+    function openDeleteModal(id) {
+        // 모달 열기 전에 삭제할 일정의 ID를 저장해두기
+        document.getElementById('deleteScheduleId').value = id;
+
+        // 모달 열기
+        var deleteModal = new bootstrap.Modal(document.getElementById('deleteScheduleModal'));
+        deleteModal.show();
+    }
+
+    // 페이지 로드 후 삭제 폼의 submit 이벤트 리스너 설정
+    document.addEventListener('DOMContentLoaded', function () {
+        // deleteScheduleForm에 이벤트 리스너를 등록
+        const deleteForm = document.getElementById('deleteScheduleForm');
+        deleteForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // 삭제할 일정의 ID 가져오기
+            const id = document.getElementById('deleteScheduleId').value;
+            const deletePassword = document.getElementById('deletePassword').value;
+
+            const data = {
+                password: deletePassword
+            };
+
+            // 삭제 API 요청
+            fetch(`/api/schedules/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('일정이 삭제되었습니다.');
+                        // 모달 닫기
+                        var deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteScheduleModal'));
+                        deleteModal.hide();
+                        // 일정 목록 새로고침
+                        loadSchedules();
+                    } else {
+                        return response.text().then(message => {
+                            throw new Error(message);
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('일정 삭제에 실패했습니다.');
+                });
+        });
+    });
+
+    // 검색 API 연결
+    document.getElementById('searchForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const searchDate = document.getElementById('searchDate').value;
+        const searchUsername = document.getElementById('searchUsername').value;
+
+        // URL에 파라미터 추가 시, 조건이 있는 값만 포함
+        let url = '/api/schedules/byConditions?';
+        if (searchUsername) {
+            url += `username=${encodeURIComponent(searchUsername)}&`;
+        }
+        if (searchDate) {
+            url += `date=${encodeURIComponent(searchDate)}`;
+        }
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                const scheduleList = document.getElementById('scheduleList');
+                scheduleList.innerHTML = '';  // 기존 일정 지우기
+
+                // 서버로부터 받은 일정을 카드 형식으로 추가
+                data.forEach(schedule => {
+                    const scheduleCard = `
+                    <div class="col">
+                        <div class="card schedule-card">
+                            <div class="card-body">
+                                <h5 class="card-title">${schedule.username}</h5>
+                                <p class="card-text">${schedule.description}</p>
+                                <div class="card-actions">
+                                    <button class="btn btn-primary" onclick="openUpdateModal(${schedule.id})">수정</button>
+                                    <button class="btn btn-danger" onclick="openDeleteModal(${schedule.id})">삭제</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                    scheduleList.innerHTML += scheduleCard;
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('일정 검색에 실패했습니다.');
+            });
+    });
+
+    // 페이지 로드 시 일정 불러오기
+    loadSchedules();
+</script>
+</body>
+</html>
