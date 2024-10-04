@@ -6,7 +6,9 @@ import com.sparta.schedule.entity.Schedule;
 import com.sparta.schedule.repository.ScheduleRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ScheduleService {
@@ -38,7 +40,6 @@ public class ScheduleService {
         // 해당 메모가 DB에 존재하는지 확인
         Schedule schedule = scheduleRepository.findById(id);
         if (schedule != null) {
-            // memo 내용 수정
             scheduleRepository.update(id, requestDto);
 
             return id;
@@ -47,11 +48,11 @@ public class ScheduleService {
         }
     }
 
-    public Long deleteSchedule(Long id, int password) {
+    public Long deleteSchedule(Long id, String password) {
         // 해당 메모가 DB에 존재하는지 확인
         Schedule schedule = scheduleRepository.findById(id);
         if (schedule != null) {
-            if (password == schedule.getPassword()) {
+            if (Objects.equals(password.trim(), schedule.getPassword())) {
                 scheduleRepository.delete(id);
                 return id;
             } else {
