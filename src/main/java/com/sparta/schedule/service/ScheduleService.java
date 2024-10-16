@@ -4,6 +4,9 @@ import com.sparta.schedule.dto.ScheduleRequestDto;
 import com.sparta.schedule.dto.ScheduleResponseDto;
 import com.sparta.schedule.entity.Schedule;
 import com.sparta.schedule.repository.ScheduleRepository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,8 +35,10 @@ public class ScheduleService {
         return new ScheduleResponseDto(findSchedule(id));
     }
 
-    public List<ScheduleResponseDto> getAllSchedules() {
-        return scheduleRepository.findAllByOrderByUpdatedAtDesc().stream().map(ScheduleResponseDto::new).toList();
+    public List<ScheduleResponseDto> getAllSchedules(int pageNum, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.DESC, "updatedAt"));
+
+        return scheduleRepository.findAll(pageable).stream().map(ScheduleResponseDto::new).toList();
     }
 
     public List<ScheduleResponseDto> getSchedulesByConditions(String username, LocalDateTime ldt) {
