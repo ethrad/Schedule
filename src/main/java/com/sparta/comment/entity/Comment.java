@@ -1,6 +1,6 @@
-package com.sparta.comments.entity;
+package com.sparta.comment.entity;
 
-import com.sparta.comments.dto.CommentRequestDto;
+import com.sparta.comment.dto.CommentRequestDto;
 import com.sparta.schedule.entity.Schedule;
 import jakarta.persistence.*;
 import lombok.Getter;

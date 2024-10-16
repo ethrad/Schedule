@@ -1,8 +1,8 @@
-package com.sparta.comments.controller;
+package com.sparta.comment.controller;
 
-import com.sparta.comments.dto.CommentRequestDto;
-import com.sparta.comments.dto.CommentResponseDto;
-import com.sparta.comments.service.CommentService;
+import com.sparta.comment.dto.CommentRequestDto;
+import com.sparta.comment.dto.CommentResponseDto;
+import com.sparta.comment.service.CommentService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

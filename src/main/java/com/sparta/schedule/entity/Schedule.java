@@ -1,6 +1,6 @@
 package com.sparta.schedule.entity;
 
-import com.sparta.comments.entity.Comment;
+import com.sparta.comment.entity.Comment;
 import com.sparta.schedule.dto.ScheduleRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
