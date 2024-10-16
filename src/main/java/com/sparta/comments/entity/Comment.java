@@ -1,7 +1,7 @@
-package com.sparta.schedule.entity;
+package com.sparta.comments.entity;
 
-import com.sparta.comments.entity.Comment;
-import com.sparta.schedule.dto.ScheduleRequestDto;
+import com.sparta.comments.dto.CommentRequestDto;
+import com.sparta.schedule.entity.Schedule;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,27 +12,23 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
 @Setter
-@Table(name = "schedule")
+@Table(name = "comment")
 @NoArgsConstructor
 @RequiredArgsConstructor
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public class Schedule {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "content", nullable = false, length = 500)
+    private String content;
     @Column(name = "username", nullable = false)
     private String username;
-    @Column(name = "title", nullable = false, length = 100)
-    private String title;
-    @Column(name = "contents", nullable = false, length = 500)
-    private String description;
 
     @CreatedDate
     @Column(updatable = false)
@@ -44,21 +40,20 @@ public class Schedule {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "schedule", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    private List<Comment> comments = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "schedule_id")
+    private Schedule schedule;
 
-    public Schedule(ScheduleRequestDto dto) {
-        this.username = dto.getUsername();
-        this.title = dto.getTitle();
-        this.description = dto.getDescription();
+    public Comment(CommentRequestDto requestDto) {
+        this.content = requestDto.getContent();
+        this.username = requestDto.getUsername();
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
 
-    public void update(ScheduleRequestDto requestDto) {
+    public void update(CommentRequestDto requestDto) {
+        this.content = requestDto.getContent();
         this.username = requestDto.getUsername();
-        this.title = requestDto.getTitle();
-        this.description = requestDto.getDescription();
         this.updatedAt = LocalDateTime.now();
     }
 }
