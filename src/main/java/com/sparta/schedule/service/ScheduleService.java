@@ -29,7 +29,7 @@ public class ScheduleService {
     }
 
     public ScheduleResponseDto getSchedule(Long id) {
-        return new ScheduleResponseDto(scheduleRepository.findById(id).orElseThrow());
+        return new ScheduleResponseDto(findSchedule(id));
     }
 
     public List<ScheduleResponseDto> getAllSchedules() {
