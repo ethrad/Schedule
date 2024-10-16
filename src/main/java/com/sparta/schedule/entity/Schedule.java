@@ -1,5 +1,6 @@
 package com.sparta.schedule.entity;
 
+import com.sparta.comments.entity.Comment;
 import com.sparta.schedule.dto.ScheduleRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -11,6 +12,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -40,6 +43,9 @@ public class Schedule {
     @Column
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "schedule", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
 
     public Schedule(ScheduleRequestDto dto) {
         this.username = dto.getUsername();

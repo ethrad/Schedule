@@ -1,6 +1,7 @@
 package com.sparta.comments.entity;
 
 import com.sparta.comments.dto.CommentRequestDto;
+import com.sparta.schedule.entity.Schedule;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +25,7 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "content", nullable = false)
+    @Column(name = "content", nullable = false, length = 500)
     private String content;
     @Column(name = "username", nullable = false)
     private String username;
@@ -38,6 +39,10 @@ public class Comment {
     @Column
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime updatedAt;
+
+    @ManyToOne
+    @JoinColumn(name = "schedule_id")
+    private Schedule schedule;
 
     public Comment(CommentRequestDto requestDto) {
         this.content = requestDto.getContent();

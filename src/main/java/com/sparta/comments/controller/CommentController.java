@@ -16,9 +16,9 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    @PostMapping
-    public CommentResponseDto createComment(@RequestBody CommentRequestDto requestDto) {
-        return commentService.createComment(requestDto);
+    @PostMapping("/{scheduleId}")
+    public CommentResponseDto createComment(@PathVariable Long scheduleId, @RequestBody CommentRequestDto requestDto) {
+        return commentService.createComment(scheduleId, requestDto);
     }
 
     @GetMapping
