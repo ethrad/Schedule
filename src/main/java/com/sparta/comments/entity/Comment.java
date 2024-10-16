@@ -47,13 +47,10 @@ public class Comment {
     public Comment(CommentRequestDto requestDto) {
         this.content = requestDto.getContent();
         this.username = requestDto.getUsername();
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
     }
 
     public void update(CommentRequestDto requestDto) {
         this.content = requestDto.getContent();
         this.username = requestDto.getUsername();
-        this.updatedAt = LocalDateTime.now();
     }
 }
