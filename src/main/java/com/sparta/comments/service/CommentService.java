@@ -27,7 +27,7 @@ public class CommentService {
         );
 
         Comment comment = new Comment(requestDto);
-        comment.setSchedule(schedule);
+        schedule.addComment(comment);
 
         Comment savedComment = commentRepository.save(comment);
 
