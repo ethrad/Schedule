@@ -51,6 +51,8 @@ public class Schedule {
 
     public void update(ScheduleRequestDto requestDto) {
         this.username = requestDto.getUsername();
-
+        this.title = requestDto.getTitle();
+        this.description = requestDto.getDescription();
+        this.updatedAt = LocalDateTime.now();
     }
 }
