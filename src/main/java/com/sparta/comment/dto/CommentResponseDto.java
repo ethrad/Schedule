@@ -1,6 +1,6 @@
-package com.sparta.comments.dto;
+package com.sparta.comment.dto;
 
-import com.sparta.comments.entity.Comment;
+import com.sparta.comment.entity.Comment;
 
 import java.time.LocalDateTime;
 

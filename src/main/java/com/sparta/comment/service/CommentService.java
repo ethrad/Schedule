@@ -1,9 +1,9 @@
-package com.sparta.comments.service;
+package com.sparta.comment.service;
 
-import com.sparta.comments.dto.CommentRequestDto;
-import com.sparta.comments.dto.CommentResponseDto;
-import com.sparta.comments.entity.Comment;
-import com.sparta.comments.repository.CommentRepository;
+import com.sparta.comment.dto.CommentRequestDto;
+import com.sparta.comment.dto.CommentResponseDto;
+import com.sparta.comment.entity.Comment;
+import com.sparta.comment.repository.CommentRepository;
 import com.sparta.schedule.entity.Schedule;
 import com.sparta.schedule.repository.ScheduleRepository;
 import org.springframework.stereotype.Service;
