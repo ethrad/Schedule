@@ -23,8 +23,9 @@ public class ScheduleController {
     }
 
     @GetMapping
-    public List<ScheduleResponseDto> getAllSchedules() {
-        return scheduleService.getAllSchedules();
+    public List<ScheduleResponseDto> getAllSchedules(@RequestParam(required = false, defaultValue = "0", value = "page") int pageNum,
+                                                     @RequestParam(required = false, defaultValue = "10", value = "pageSize") int pageSize) {
+        return scheduleService.getAllSchedules(pageNum, pageSize);
     }
 
     @GetMapping("/{id}")

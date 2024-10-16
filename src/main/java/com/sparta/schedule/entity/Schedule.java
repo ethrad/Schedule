@@ -47,6 +47,11 @@ public class Schedule {
     @OneToMany(mappedBy = "schedule", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
+    public void addComment(Comment comment) {
+        comments.add(comment);
+        comment.setSchedule(this);
+    }
+
     public Schedule(ScheduleRequestDto dto) {
         this.username = dto.getUsername();
         this.title = dto.getTitle();
