@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/schedules")
 public class ScheduleController {
     ScheduleService scheduleService;
 
@@ -17,34 +17,34 @@ public class ScheduleController {
         this.scheduleService = scheduleService;
     }
 
-    @PostMapping("/schedules")
+    @PostMapping
     public ScheduleResponseDto createSchedule(@RequestBody ScheduleRequestDto requestDto) {
         return scheduleService.createSchedule(requestDto);
     }
 
-    @GetMapping("/schedules")
+    @GetMapping
     public List<ScheduleResponseDto> getAllSchedules() {
         return scheduleService.getAllSchedules();
     }
 
-    @GetMapping("/schedules/{id}")
+    @GetMapping("/{id}")
     public ScheduleResponseDto getSchedule(@PathVariable Long id) {
         return scheduleService.getSchedule(id);
     }
 
-    @GetMapping("/schedules/byConditions")
+    @GetMapping("/byConditions")
     public List<ScheduleResponseDto> getSchedulesByConditions(@RequestParam(required = false) String username, @RequestParam(required = false) String ldt) {
         LocalDateTime localDateTime = (ldt != null && !ldt.isEmpty()) ? LocalDateTime.parse(ldt) : null;
 
         return scheduleService.getSchedulesByConditions(username, localDateTime);
     }
 
-    @PutMapping("/schedules/{id}")
+    @PutMapping("/{id}")
     public Long updateSchedule(@PathVariable Long id, @RequestBody ScheduleRequestDto requestDto) {
         return scheduleService.updateSchedule(id, requestDto);
     }
 
-    @DeleteMapping("/schedules/{id}")
+    @DeleteMapping("/{id}")
     public Long deleteSchedule(@PathVariable Long id, @RequestBody ScheduleRequestDto requestDto) {
         return scheduleService.deleteSchedule(id);
     }
