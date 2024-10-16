@@ -5,7 +5,7 @@ import com.sparta.schedule.dto.ScheduleResponseDto;
 import com.sparta.schedule.service.ScheduleService;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -33,11 +33,10 @@ public class ScheduleController {
     }
 
     @GetMapping("/schedules/byConditions")
-    public List<ScheduleResponseDto> getSchedulesByConditions(@RequestParam(required = false) String username, @RequestParam(required = false) String date) {
-        // 문자열을 LocalDate로 변환
-        LocalDate localDate = (date != null && !date.isEmpty()) ? LocalDate.parse(date) : null;
+    public List<ScheduleResponseDto> getSchedulesByConditions(@RequestParam(required = false) String username, @RequestParam(required = false) String ldt) {
+        LocalDateTime localDateTime = (ldt != null && !ldt.isEmpty()) ? LocalDateTime.parse(ldt) : null;
 
-        return scheduleService.getSchedulesByConditions(username, localDate);
+        return scheduleService.getSchedulesByConditions(username, localDateTime);
     }
 
     @PutMapping("/schedules/{id}")
@@ -47,6 +46,6 @@ public class ScheduleController {
 
     @DeleteMapping("/schedules/{id}")
     public Long deleteSchedule(@PathVariable Long id, @RequestBody ScheduleRequestDto requestDto) {
-        return scheduleService.deleteSchedule(id, requestDto.getPassword());
+        return scheduleService.deleteSchedule(id);
     }
 }

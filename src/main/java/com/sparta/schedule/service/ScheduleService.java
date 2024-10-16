@@ -5,10 +5,10 @@ import com.sparta.schedule.dto.ScheduleResponseDto;
 import com.sparta.schedule.entity.Schedule;
 import com.sparta.schedule.repository.ScheduleRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class ScheduleService {
@@ -29,47 +29,35 @@ public class ScheduleService {
     }
 
     public ScheduleResponseDto getSchedule(Long id) {
-        // 해당 일정이 DB에 존재하는지 확인
-        Schedule schedule = scheduleRepository.findById(id);
-        if (schedule != null) {
-            return new ScheduleResponseDto(schedule);
-        } else {
-            throw new IllegalArgumentException("선택한 일정이 존재하지 않습니다.");
-        }
+        return new ScheduleResponseDto(scheduleRepository.findById(id).orElseThrow());
     }
 
     public List<ScheduleResponseDto> getAllSchedules() {
-        return scheduleRepository.findAll();
+        return scheduleRepository.findAllByOrderByUpdatedAtDesc().stream().map(ScheduleResponseDto::new).toList();
     }
 
-    public List<ScheduleResponseDto> getSchedulesByConditions(String username, LocalDate date) {
-        return scheduleRepository.findByConditions(username, date);
+    public List<ScheduleResponseDto> getSchedulesByConditions(String username, LocalDateTime ldt) {
+        return scheduleRepository.findByUsernameAndUpdatedAt(username, ldt).stream().map(ScheduleResponseDto::new).toList();
     }
 
+    @Transactional
     public Long updateSchedule(Long id, ScheduleRequestDto requestDto) {
-        // 해당 일정이 DB에 존재하는지 확인
-        Schedule schedule = scheduleRepository.findById(id);
-        if (schedule != null) {
-            scheduleRepository.update(id, requestDto);
-            return id;
-        } else {
-            throw new IllegalArgumentException("선택한 일정이 존재하지 않습니다.");
-        }
+        Schedule schedule = findSchedule(id);
+        schedule.update(requestDto);
+        return id;
     }
 
-    public Long deleteSchedule(Long id, String password) {
-        // 해당 일정이 DB에 존재하는지 확인
-        Schedule schedule = scheduleRepository.findById(id);
-        if (schedule != null) {
-            // 비밀번호가 일치하는지 확인
-            if (Objects.equals(password.trim(), schedule.getPassword())) {
-                scheduleRepository.delete(id);
-                return id;
-            } else {
-                throw new IllegalArgumentException("비밀번호가 틀렸습니다.");
-            }
-        } else {
-            throw new IllegalArgumentException("선택한 일정이 존재하지 않습니다.");
-        }
+    public Long deleteSchedule(Long id) {
+        Schedule schedule = findSchedule(id);
+
+        scheduleRepository.delete(schedule);
+        return id;
     }
+
+    private Schedule findSchedule(Long id){
+        return scheduleRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("Schedule not found"));
+    }
+
+
 }
