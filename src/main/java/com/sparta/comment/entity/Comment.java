@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 @Setter
 @Table(name = "comment")
 @NoArgsConstructor
-@RequiredArgsConstructor
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public class Comment {

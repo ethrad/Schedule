@@ -21,7 +21,6 @@ import java.util.List;
 @Setter
 @Table(name = "schedule")
 @NoArgsConstructor
-@RequiredArgsConstructor
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public class Schedule {

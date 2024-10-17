@@ -20,7 +20,6 @@ import java.util.List;
 @Setter
 @Table(name = "user")
 @NoArgsConstructor
-@RequiredArgsConstructor
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public class User {
