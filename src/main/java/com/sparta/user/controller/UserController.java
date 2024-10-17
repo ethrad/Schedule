@@ -37,7 +37,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public Long deleteUser(@PathVariable Long id, @RequestBody UserRequestDto requestDto) {
+    public Long deleteUser(@PathVariable Long id) {
         return scheduleService.deleteUser(id);
     }
 }
