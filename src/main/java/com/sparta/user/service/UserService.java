@@ -6,6 +6,7 @@ import com.sparta.user.dto.UserRequestDto;
 import com.sparta.user.dto.UserResponseDto;
 import com.sparta.user.entity.User;
 import com.sparta.user.repository.UserRepository;
+import org.springframework.http.RequestEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,16 +37,15 @@ public class UserService {
     }
 
     @Transactional
-    public Long updateUser(Long id, UserRequestDto requestDto) {
+    public UserResponseDto updateUser(Long id, UserRequestDto requestDto) {
         User user = findUser(id);
         user.update(requestDto);
-        return id;
+        return new UserResponseDto(user);
     }
 
-    public Long deleteUser(Long id) {
+    public void deleteUser(Long id) {
         User user = findUser(id);
         userRepository.delete(user);
-        return id;
     }
 
     private User findUser(Long id) {

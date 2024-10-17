@@ -45,16 +45,15 @@ public class CommentService {
     }
 
     @Transactional
-    public Long updateComment(Long id, CommentRequestDto requestDto) {
+    public CommentResponseDto updateComment(Long id, CommentRequestDto requestDto) {
         Comment comment = findComment(id);
         comment.update(requestDto);
-        return id;
+        return new CommentResponseDto(comment);
     }
 
-    public Long deleteComment(Long id) {
+    public void deleteComment(Long id) {
         Comment comment = findComment(id);
         commentRepository.delete(comment);
-        return id;
     }
 
     private Comment findComment(Long id) {

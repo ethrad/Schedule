@@ -3,6 +3,7 @@ package com.sparta.schedule.controller;
 import com.sparta.schedule.dto.ScheduleRequestDto;
 import com.sparta.schedule.dto.ScheduleResponseDto;
 import com.sparta.schedule.service.ScheduleService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,40 +20,47 @@ public class ScheduleController {
     }
 
     @PostMapping("/{userId}")
-    public ScheduleResponseDto createSchedule(@PathVariable Long userId, @RequestBody ScheduleRequestDto requestDto) {
-        return scheduleService.createSchedule(userId, requestDto);
+    public ResponseEntity<ScheduleResponseDto> createSchedule(@PathVariable Long userId, @RequestBody ScheduleRequestDto requestDto) {
+        ScheduleResponseDto responseDto = scheduleService.createSchedule(userId, requestDto);
+        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public List<ScheduleResponseDto> getAllSchedules(@RequestParam(required = false, defaultValue = "0", value = "page") int pageNum,
-                                                     @RequestParam(required = false, defaultValue = "10", value = "pageSize") int pageSize) {
-        return scheduleService.getAllSchedules(pageNum, pageSize);
+    public ResponseEntity<List<ScheduleResponseDto>> getAllSchedules(@RequestParam(required = false, defaultValue = "0", value = "page") int pageNum,
+                                                                     @RequestParam(required = false, defaultValue = "10", value = "pageSize") int pageSize) {
+        List<ScheduleResponseDto> schedules = scheduleService.getAllSchedules(pageNum, pageSize);
+        return new ResponseEntity<>(schedules, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ScheduleResponseDto getSchedule(@PathVariable Long id) {
-        return scheduleService.getSchedule(id);
+    public ResponseEntity<ScheduleResponseDto> getSchedule(@PathVariable Long id) {
+        ScheduleResponseDto schedule = scheduleService.getSchedule(id);
+        return new ResponseEntity<>(schedule, HttpStatus.OK);
     }
 
     @GetMapping("/byConditions")
-    public List<ScheduleResponseDto> getSchedulesByConditions(@RequestParam(required = false) String username, @RequestParam(required = false) String ldt) {
+    public ResponseEntity<List<ScheduleResponseDto>> getSchedulesByConditions(@RequestParam(required = false) String username, @RequestParam(required = false) String ldt) {
         LocalDateTime localDateTime = (ldt != null && !ldt.isEmpty()) ? LocalDateTime.parse(ldt) : null;
 
-        return scheduleService.getSchedulesByConditions(username, localDateTime);
+        List<ScheduleResponseDto> schedules = scheduleService.getSchedulesByConditions(username, localDateTime);
+        return new ResponseEntity<>(schedules, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public Long updateSchedule(@PathVariable Long id, @RequestBody ScheduleRequestDto requestDto) {
-        return scheduleService.updateSchedule(id, requestDto);
+    public ResponseEntity<ScheduleResponseDto> updateSchedule(@PathVariable Long id, @RequestBody ScheduleRequestDto requestDto) {
+        ScheduleResponseDto schedule = scheduleService.updateSchedule(id, requestDto);
+        return new ResponseEntity<>(schedule, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public Long deleteSchedule(@PathVariable Long id) {
-        return scheduleService.deleteSchedule(id);
+    public ResponseEntity<ScheduleResponseDto> deleteSchedule(@PathVariable Long id) {
+        scheduleService.deleteSchedule(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping("/{id}/addUser")
-    public Long addUserToSchedule(@PathVariable Long id, @RequestParam Long userId) {
-        return scheduleService.addUserToSchedule(id, userId);
+    public ResponseEntity<ScheduleResponseDto> addUserToSchedule(@PathVariable Long id, @RequestParam Long userId) {
+        ScheduleResponseDto schedule = scheduleService.addUserToSchedule(id, userId);
+        return new ResponseEntity<>(schedule, HttpStatus.OK);
     }
 }

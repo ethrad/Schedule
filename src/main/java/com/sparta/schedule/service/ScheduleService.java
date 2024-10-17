@@ -55,20 +55,19 @@ public class ScheduleService {
     }
 
     @Transactional
-    public Long updateSchedule(Long id, ScheduleRequestDto requestDto) {
+    public ScheduleResponseDto updateSchedule(Long id, ScheduleRequestDto requestDto) {
         Schedule schedule = findSchedule(id);
         schedule.update(requestDto);
-        return id;
+        return new ScheduleResponseDto(schedule);
     }
 
-    public Long deleteSchedule(Long id) {
+    public void deleteSchedule(Long id) {
         Schedule schedule = findSchedule(id);
 
         scheduleRepository.delete(schedule);
-        return id;
     }
 
-    public Long addUserToSchedule(Long id, Long userId) {
+    public ScheduleResponseDto addUserToSchedule(Long id, Long userId) {
         Schedule schedule = findSchedule(id);
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new CustomException(ErrorCode.USER_NOT_FOUND)
@@ -78,7 +77,7 @@ public class ScheduleService {
         user.addSchedule(schedule);
 
         scheduleRepository.save(schedule);
-        return id;
+        return new ScheduleResponseDto(schedule);
     }
 
 
