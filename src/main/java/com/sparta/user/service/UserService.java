@@ -1,5 +1,7 @@
 package com.sparta.user.service;
 
+import com.sparta.common.CustomException;
+import com.sparta.common.ErrorCode;
 import com.sparta.user.dto.UserRequestDto;
 import com.sparta.user.dto.UserResponseDto;
 import com.sparta.user.entity.User;
@@ -48,7 +50,7 @@ public class UserService {
 
     private User findUser(Long id) {
         return userRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("User not found")
+                () -> new CustomException(ErrorCode.USER_NOT_FOUND)
         );
     }
 }

@@ -4,6 +4,8 @@ import com.sparta.comment.dto.CommentRequestDto;
 import com.sparta.comment.dto.CommentResponseDto;
 import com.sparta.comment.entity.Comment;
 import com.sparta.comment.repository.CommentRepository;
+import com.sparta.common.CustomException;
+import com.sparta.common.ErrorCode;
 import com.sparta.schedule.entity.Schedule;
 import com.sparta.schedule.repository.ScheduleRepository;
 import org.springframework.stereotype.Service;
@@ -23,7 +25,7 @@ public class CommentService {
 
     public CommentResponseDto createComment(Long scheduleId, CommentRequestDto requestDto) {
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
-                () -> new IllegalArgumentException("Schedule not found")
+                () -> new CustomException(ErrorCode.SCHEDULE_NOT_FOUND)
         );
 
         Comment comment = new Comment(requestDto);
@@ -56,7 +58,8 @@ public class CommentService {
     }
 
     private Comment findComment(Long id) {
-        return commentRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("Comment not found"));
+        return commentRepository.findById(id).orElseThrow(
+                () -> new CustomException(ErrorCode.COMMENT_NOT_FOUND)
+        );
     }
 }

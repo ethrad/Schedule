@@ -1,5 +1,7 @@
 package com.sparta.schedule.service;
 
+import com.sparta.common.CustomException;
+import com.sparta.common.ErrorCode;
 import com.sparta.schedule.dto.ScheduleRequestDto;
 import com.sparta.schedule.dto.ScheduleResponseDto;
 import com.sparta.schedule.entity.Schedule;
@@ -27,7 +29,7 @@ public class ScheduleService {
 
     public ScheduleResponseDto createSchedule(Long userId, ScheduleRequestDto requestDto) {
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new IllegalArgumentException("User not found")
+                () -> new CustomException(ErrorCode.USER_NOT_FOUND)
         );
 
         Schedule schedule = new Schedule(requestDto);
@@ -69,7 +71,7 @@ public class ScheduleService {
     public Long addUserToSchedule(Long id, Long userId) {
         Schedule schedule = findSchedule(id);
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new IllegalArgumentException("User not found")
+                () -> new CustomException(ErrorCode.USER_NOT_FOUND)
         );
 
         schedule.addUser(user);
@@ -82,6 +84,6 @@ public class ScheduleService {
 
     private Schedule findSchedule(Long id) {
         return scheduleRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("Schedule not found"));
+                new CustomException(ErrorCode.SCHEDULE_NOT_FOUND));
     }
 }
