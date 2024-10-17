@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class ScheduleResponseDto {
     private Long id;
-    private String username;
+    private Long userId;
     private String title;
     private String description;
     private LocalDateTime createdAt;
@@ -22,7 +22,7 @@ public class ScheduleResponseDto {
 
     public ScheduleResponseDto(Schedule schedule) {
         this.id = schedule.getId();
-        this.username = schedule.getUsername();
+        this.userId = schedule.getUserId();
         this.title = schedule.getTitle();
         this.description = schedule.getDescription();
         this.createdAt = schedule.getCreatedAt();
