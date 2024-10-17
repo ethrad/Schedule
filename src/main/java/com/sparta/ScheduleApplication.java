@@ -1,4 +1,4 @@
-package com.sparta.schedule;
+package com.sparta;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
