@@ -3,6 +3,7 @@ package com.sparta.schedule.controller;
 import com.sparta.schedule.dto.ScheduleRequestDto;
 import com.sparta.schedule.dto.ScheduleResponseDto;
 import com.sparta.schedule.service.ScheduleService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -17,9 +18,9 @@ public class ScheduleController {
         this.scheduleService = scheduleService;
     }
 
-    @PostMapping
-    public ScheduleResponseDto createSchedule(@RequestBody ScheduleRequestDto requestDto) {
-        return scheduleService.createSchedule(requestDto);
+    @PostMapping("/{userId}")
+    public ScheduleResponseDto createSchedule(@PathVariable Long userId, @RequestBody ScheduleRequestDto requestDto) {
+        return scheduleService.createSchedule(userId, requestDto);
     }
 
     @GetMapping
@@ -48,5 +49,10 @@ public class ScheduleController {
     @DeleteMapping("/{id}")
     public Long deleteSchedule(@PathVariable Long id) {
         return scheduleService.deleteSchedule(id);
+    }
+
+    @PostMapping("/{id}/addUser")
+    public Long addUserToSchedule(@PathVariable Long id, @RequestParam Long userId) {
+        return scheduleService.addUserToSchedule(id, userId);
     }
 }

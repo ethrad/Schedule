@@ -4,6 +4,8 @@ import com.sparta.schedule.dto.ScheduleRequestDto;
 import com.sparta.schedule.dto.ScheduleResponseDto;
 import com.sparta.schedule.entity.Schedule;
 import com.sparta.schedule.repository.ScheduleRepository;
+import com.sparta.user.entity.User;
+import com.sparta.user.repository.UserRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -16,18 +18,23 @@ import java.util.List;
 @Service
 public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
+    private final UserRepository userRepository;
 
-    public ScheduleService(ScheduleRepository scheduleRepository) {
+    public ScheduleService(ScheduleRepository scheduleRepository, UserRepository userRepository) {
         this.scheduleRepository = scheduleRepository;
+        this.userRepository = userRepository;
     }
 
-    public ScheduleResponseDto createSchedule(ScheduleRequestDto requestDto) {
-        // RequestDto -> Entity
+    public ScheduleResponseDto createSchedule(Long userId, ScheduleRequestDto requestDto) {
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new IllegalArgumentException("User not found")
+        );
+
         Schedule schedule = new Schedule(requestDto);
+        user.addSchedule(schedule);
 
         Schedule savedSchedule = scheduleRepository.save(schedule);
 
-        // Entity -> ResponseDto
         return new ScheduleResponseDto(savedSchedule);
     }
 
@@ -59,10 +66,22 @@ public class ScheduleService {
         return id;
     }
 
-    private Schedule findSchedule(Long id){
-        return scheduleRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("Schedule not found"));
+    public Long addUserToSchedule(Long id, Long userId) {
+        Schedule schedule = findSchedule(id);
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new IllegalArgumentException("User not found")
+        );
+
+        schedule.addUser(user);
+        user.addSchedule(schedule);
+
+        scheduleRepository.save(schedule);
+        return id;
     }
 
 
+    private Schedule findSchedule(Long id) {
+        return scheduleRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("Schedule not found"));
+    }
 }

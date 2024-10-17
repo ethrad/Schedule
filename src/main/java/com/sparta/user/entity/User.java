@@ -1,5 +1,6 @@
 package com.sparta.user.entity;
 
+import com.sparta.schedule.entity.Schedule;
 import com.sparta.user.dto.UserRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -11,6 +12,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -39,6 +42,9 @@ public class User {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime updatedAt;
 
+    @ManyToMany(mappedBy = "userList", fetch = FetchType.LAZY)
+    private List<Schedule> schedules = new ArrayList<>();
+
     public User(UserRequestDto requestDto) {
         this.username = requestDto.getUsername();
         this.email = requestDto.getEmail();
@@ -47,5 +53,10 @@ public class User {
     public void update(UserRequestDto requestDto) {
         this.username = requestDto.getUsername();
         this.email = requestDto.getEmail();
+    }
+
+    public void addSchedule(Schedule schedule) {
+        schedules.add(schedule);
+        schedule.addUser(this);
     }
 }
