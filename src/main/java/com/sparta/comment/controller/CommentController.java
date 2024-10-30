@@ -3,6 +3,7 @@ package com.sparta.comment.controller;
 import com.sparta.comment.dto.CommentRequestDto;
 import com.sparta.comment.dto.CommentResponseDto;
 import com.sparta.comment.service.CommentService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class CommentController {
     }
 
     @PostMapping("/{scheduleId}")
-    public ResponseEntity<CommentResponseDto> createComment(@PathVariable Long scheduleId, @RequestBody CommentRequestDto requestDto) {
+    public ResponseEntity<CommentResponseDto> createComment(@PathVariable Long scheduleId, @RequestBody @Valid CommentRequestDto requestDto) {
         CommentResponseDto responseDto = commentService.createComment(scheduleId, requestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
@@ -37,7 +38,7 @@ public class CommentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CommentResponseDto> updateComment(@PathVariable Long id, @RequestBody CommentRequestDto requestDto) {
+    public ResponseEntity<CommentResponseDto> updateComment(@PathVariable Long id, @RequestBody @Valid CommentRequestDto requestDto) {
         CommentResponseDto responseDto = commentService.updateComment(id, requestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
