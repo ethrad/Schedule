@@ -14,10 +14,10 @@ import lombok.Setter;
 public class ScheduleRequestDto {
     @NotBlank
     private Long userId;
-    @NotEmpty
-    @Size(min = 1, max = 100)
+    @NotEmpty(message = "제목은 필수 입력 항목입니다.")
+    @Size(min = 1, max = 100, message = "제목은 1글자 이상, 100글자 이하여야 합니다.")
     private String title;
-    @NotNull
-    @Size(min = 1, max = 500)
+    @NotNull(message = "내용은 필수 입력 항목입니다.")
+    @Size(min = 1, max = 500, message = "내용은 1글자 이상, 500글자 이하여야 합니다.")
     private String description;
 }
