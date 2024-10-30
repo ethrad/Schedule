@@ -1,7 +1,7 @@
 package com.sparta.controller;
 
-import com.sparta.dto.CommentRequestDto;
-import com.sparta.dto.CommentResponseDto;
+import com.sparta.dto.request.CommentRequestDto;
+import com.sparta.dto.response.CommentResponseDto;
 import com.sparta.service.CommentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

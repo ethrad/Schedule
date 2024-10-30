@@ -1,7 +1,7 @@
 package com.sparta.controller;
 
-import com.sparta.dto.UserRequestDto;
-import com.sparta.dto.UserResponseDto;
+import com.sparta.dto.request.UserRequestDto;
+import com.sparta.dto.response.UserResponseDto;
 import com.sparta.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

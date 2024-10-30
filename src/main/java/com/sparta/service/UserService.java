@@ -2,8 +2,8 @@ package com.sparta.service;
 
 import com.sparta.common.ApplicationException;
 import com.sparta.common.ErrorCode;
-import com.sparta.dto.UserRequestDto;
-import com.sparta.dto.UserResponseDto;
+import com.sparta.dto.request.UserRequestDto;
+import com.sparta.dto.response.UserResponseDto;
 import com.sparta.entity.User;
 import com.sparta.repository.UserRepository;
 import org.springframework.stereotype.Service;

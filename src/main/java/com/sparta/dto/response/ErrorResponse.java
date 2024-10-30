@@ -1,4 +1,4 @@
-package com.sparta.dto;
+package com.sparta.dto.response;
 
 import com.sparta.common.ErrorCode;
 import lombok.Getter;

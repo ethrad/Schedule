@@ -1,7 +1,7 @@
 package com.sparta.service;
 
-import com.sparta.dto.CommentRequestDto;
-import com.sparta.dto.CommentResponseDto;
+import com.sparta.dto.request.CommentRequestDto;
+import com.sparta.dto.response.CommentResponseDto;
 import com.sparta.entity.Comment;
 import com.sparta.repository.CommentRepository;
 import com.sparta.common.ApplicationException;

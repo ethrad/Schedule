@@ -1,7 +1,7 @@
 package com.sparta.controller;
 
-import com.sparta.dto.ScheduleRequestDto;
-import com.sparta.dto.ScheduleResponseDto;
+import com.sparta.dto.request.ScheduleRequestDto;
+import com.sparta.dto.response.ScheduleResponseDto;
 import com.sparta.service.ScheduleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

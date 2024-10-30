@@ -1,6 +1,6 @@
 package com.sparta.entity;
 
-import com.sparta.dto.CommentRequestDto;
+import com.sparta.dto.request.CommentRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -2,8 +2,8 @@ package com.sparta.service;
 
 import com.sparta.common.ApplicationException;
 import com.sparta.common.ErrorCode;
-import com.sparta.dto.ScheduleRequestDto;
-import com.sparta.dto.ScheduleResponseDto;
+import com.sparta.dto.request.ScheduleRequestDto;
+import com.sparta.dto.response.ScheduleResponseDto;
 import com.sparta.entity.Schedule;
 import com.sparta.repository.ScheduleRepository;
 import com.sparta.entity.User;
