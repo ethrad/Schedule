@@ -1,4 +1,4 @@
-package com.sparta.user.dto;
+package com.sparta.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

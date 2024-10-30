@@ -1,13 +1,13 @@
-package com.sparta.schedule.service;
+package com.sparta.service;
 
 import com.sparta.common.ApplicationException;
 import com.sparta.common.ErrorCode;
-import com.sparta.schedule.dto.ScheduleRequestDto;
-import com.sparta.schedule.dto.ScheduleResponseDto;
-import com.sparta.schedule.entity.Schedule;
-import com.sparta.schedule.repository.ScheduleRepository;
-import com.sparta.user.entity.User;
-import com.sparta.user.repository.UserRepository;
+import com.sparta.dto.ScheduleRequestDto;
+import com.sparta.dto.ScheduleResponseDto;
+import com.sparta.entity.Schedule;
+import com.sparta.repository.ScheduleRepository;
+import com.sparta.entity.User;
+import com.sparta.repository.UserRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;

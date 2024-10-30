@@ -1,6 +1,6 @@
-package com.sparta.comment.repository;
+package com.sparta.repository;
 
-import com.sparta.comment.entity.Comment;
+import com.sparta.entity.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

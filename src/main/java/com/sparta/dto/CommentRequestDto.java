@@ -1,4 +1,4 @@
-package com.sparta.comment.dto;
+package com.sparta.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;

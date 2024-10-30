@@ -1,9 +1,10 @@
-package com.sparta.comment.controller;
+package com.sparta.controller;
 
-import com.sparta.comment.dto.CommentRequestDto;
-import com.sparta.comment.dto.CommentResponseDto;
-import com.sparta.comment.service.CommentService;
+import com.sparta.dto.CommentRequestDto;
+import com.sparta.dto.CommentResponseDto;
+import com.sparta.service.CommentService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,13 +12,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/comments")
 public class CommentController {
     private final CommentService commentService;
-
-    public CommentController(CommentService commentService) {
-        this.commentService = commentService;
-    }
 
     @PostMapping("/{scheduleId}")
     public ResponseEntity<CommentResponseDto> createComment(@PathVariable Long scheduleId, @RequestBody @Valid CommentRequestDto requestDto) {

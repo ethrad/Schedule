@@ -1,13 +1,13 @@
-package com.sparta.comment.service;
+package com.sparta.service;
 
-import com.sparta.comment.dto.CommentRequestDto;
-import com.sparta.comment.dto.CommentResponseDto;
-import com.sparta.comment.entity.Comment;
-import com.sparta.comment.repository.CommentRepository;
+import com.sparta.dto.CommentRequestDto;
+import com.sparta.dto.CommentResponseDto;
+import com.sparta.entity.Comment;
+import com.sparta.repository.CommentRepository;
 import com.sparta.common.ApplicationException;
 import com.sparta.common.ErrorCode;
-import com.sparta.schedule.entity.Schedule;
-import com.sparta.schedule.repository.ScheduleRepository;
+import com.sparta.entity.Schedule;
+import com.sparta.repository.ScheduleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

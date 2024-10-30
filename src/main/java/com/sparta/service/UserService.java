@@ -1,15 +1,16 @@
-package com.sparta.user.service;
+package com.sparta.service;
 
 import com.sparta.common.ApplicationException;
 import com.sparta.common.ErrorCode;
-import com.sparta.user.dto.UserRequestDto;
-import com.sparta.user.dto.UserResponseDto;
-import com.sparta.user.entity.User;
-import com.sparta.user.repository.UserRepository;
+import com.sparta.dto.UserRequestDto;
+import com.sparta.dto.UserResponseDto;
+import com.sparta.entity.User;
+import com.sparta.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -20,6 +21,12 @@ public class UserService {
     }
 
     public UserResponseDto createUser(UserRequestDto requestDto) {
+        String email = requestDto.getEmail();
+        Optional<User> checkEmail = userRepository.findByEmail(email);
+        if (checkEmail.isPresent()) {
+            throw new ApplicationException(ErrorCode.DUPLICATE_EMAIL);
+        }
+
         User user = new User(requestDto);
 
         User savedUser = userRepository.save(user);

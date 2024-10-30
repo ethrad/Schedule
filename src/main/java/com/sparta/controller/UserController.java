@@ -1,9 +1,10 @@
-package com.sparta.user.controller;
+package com.sparta.controller;
 
-import com.sparta.user.dto.UserRequestDto;
-import com.sparta.user.dto.UserResponseDto;
-import com.sparta.user.service.UserService;
+import com.sparta.dto.UserRequestDto;
+import com.sparta.dto.UserResponseDto;
+import com.sparta.service.UserService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,13 +12,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/users")
 public class UserController {
-    UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private final UserService userService;
 
     @PostMapping
     public ResponseEntity<UserResponseDto> createUser(@RequestBody @Valid UserRequestDto requestDto) {

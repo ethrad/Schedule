@@ -1,6 +1,6 @@
-package com.sparta.user.dto;
+package com.sparta.dto;
 
-import com.sparta.user.entity.User;
+import com.sparta.entity.User;
 import lombok.Getter;
 import lombok.Setter;
 

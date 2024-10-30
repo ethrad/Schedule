@@ -1,9 +1,10 @@
-package com.sparta.schedule.controller;
+package com.sparta.controller;
 
-import com.sparta.schedule.dto.ScheduleRequestDto;
-import com.sparta.schedule.dto.ScheduleResponseDto;
-import com.sparta.schedule.service.ScheduleService;
+import com.sparta.dto.ScheduleRequestDto;
+import com.sparta.dto.ScheduleResponseDto;
+import com.sparta.service.ScheduleService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,13 +13,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/schedules")
 public class ScheduleController {
-    ScheduleService scheduleService;
-
-    public ScheduleController(ScheduleService scheduleService) {
-        this.scheduleService = scheduleService;
-    }
+    private final ScheduleService scheduleService;
 
     @PostMapping("/{userId}")
     public ResponseEntity<ScheduleResponseDto> createSchedule(@PathVariable Long userId, @RequestBody @Valid ScheduleRequestDto requestDto) {

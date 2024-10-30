@@ -1,6 +1,6 @@
-package com.sparta.schedule.repository;
+package com.sparta.repository;
 
-import com.sparta.schedule.entity.Schedule;
+import com.sparta.entity.Schedule;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

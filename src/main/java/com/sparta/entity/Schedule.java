@@ -1,19 +1,11 @@
-package com.sparta.schedule.entity;
+package com.sparta.entity;
 
-import com.sparta.comment.entity.Comment;
-import com.sparta.entity.Timestamped;
-import com.sparta.schedule.dto.ScheduleRequestDto;
-import com.sparta.user.entity.User;
+import com.sparta.dto.ScheduleRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
