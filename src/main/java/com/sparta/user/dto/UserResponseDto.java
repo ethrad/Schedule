@@ -14,7 +14,7 @@ public class UserResponseDto {
     private String email;
 
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private LocalDateTime modifiedAt;
 
     public UserResponseDto(User user) {
         this.id = user.getId();

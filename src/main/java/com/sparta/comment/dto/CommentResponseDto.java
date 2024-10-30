@@ -9,13 +9,13 @@ public class CommentResponseDto {
     private String content;
     private String username;
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private LocalDateTime modifiedAt;
 
     public CommentResponseDto(Comment savedComment) {
         this.id = savedComment.getId();
         this.content = savedComment.getContent();
         this.username = savedComment.getUsername();
         this.createdAt = savedComment.getCreatedAt();
-        this.updatedAt = savedComment.getUpdatedAt();
+        this.modifiedAt = savedComment.getModifiedAt();
     }
 }

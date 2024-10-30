@@ -1,6 +1,7 @@
 package com.sparta.schedule.entity;
 
 import com.sparta.comment.entity.Comment;
+import com.sparta.entity.Timestamped;
 import com.sparta.schedule.dto.ScheduleRequestDto;
 import com.sparta.user.entity.User;
 import jakarta.persistence.*;
@@ -21,28 +22,16 @@ import java.util.List;
 @Setter
 @Table(name = "schedule")
 @NoArgsConstructor
-@MappedSuperclass
-@EntityListeners(AuditingEntityListener.class)
-public class Schedule {
+public class Schedule extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "username", nullable = false)
+    @Column(name = "userId", nullable = false)
     private Long userId;
     @Column(name = "title", nullable = false, length = 100)
     private String title;
     @Column(name = "contents", nullable = false, length = 500)
     private String description;
-
-    @CreatedDate
-    @Column(updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    @Column
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "schedule", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();

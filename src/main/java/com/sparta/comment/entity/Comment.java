@@ -1,6 +1,7 @@
 package com.sparta.comment.entity;
 
 import com.sparta.comment.dto.CommentRequestDto;
+import com.sparta.entity.Timestamped;
 import com.sparta.schedule.entity.Schedule;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -17,30 +18,18 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Table(name = "comment")
-@NoArgsConstructor
-@MappedSuperclass
-@EntityListeners(AuditingEntityListener.class)
-public class Comment {
+@RequiredArgsConstructor
+public class Comment extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "content", nullable = false, length = 500)
+    @Column(nullable = false, length = 500)
     private String content;
-    @Column(name = "username", nullable = false)
+    @Column(nullable = false)
     private String username;
 
-    @CreatedDate
-    @Column(updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    @Column
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime updatedAt;
-
     @ManyToOne
-    @JoinColumn(name = "schedule_id")
+    @JoinColumn(name = "schedule_id", nullable = false)
     private Schedule schedule;
 
     public Comment(CommentRequestDto requestDto) {

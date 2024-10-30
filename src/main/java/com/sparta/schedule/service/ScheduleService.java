@@ -45,13 +45,13 @@ public class ScheduleService {
     }
 
     public List<ScheduleResponseDto> getAllSchedules(int pageNum, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.DESC, "updatedAt"));
+        Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.DESC, "modifiedAt"));
 
         return scheduleRepository.findAll(pageable).stream().map(ScheduleResponseDto::new).toList();
     }
 
     public List<ScheduleResponseDto> getSchedulesByConditions(String username, LocalDateTime ldt) {
-        return scheduleRepository.findByUsernameAndUpdatedAt(username, ldt).stream().map(ScheduleResponseDto::new).toList();
+        return scheduleRepository.findByUsernameAndModifiedAt(username, ldt).stream().map(ScheduleResponseDto::new).toList();
     }
 
     @Transactional

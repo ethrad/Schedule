@@ -1,5 +1,6 @@
 package com.sparta.user.entity;
 
+import com.sparta.entity.Timestamped;
 import com.sparta.schedule.entity.Schedule;
 import com.sparta.user.dto.UserRequestDto;
 import jakarta.persistence.*;
@@ -20,9 +21,7 @@ import java.util.List;
 @Setter
 @Table(name = "user")
 @NoArgsConstructor
-@MappedSuperclass
-@EntityListeners(AuditingEntityListener.class)
-public class User {
+public class User extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,17 +30,7 @@ public class User {
     @Column(name = "email", nullable = false, length = 50)
     private String email;
 
-    @CreatedDate
-    @Column(updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    @Column
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime updatedAt;
-
-    @ManyToMany(mappedBy = "userList", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private List<Schedule> schedules = new ArrayList<>();
 
     public User(UserRequestDto requestDto) {
