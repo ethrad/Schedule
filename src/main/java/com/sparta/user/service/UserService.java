@@ -1,12 +1,11 @@
 package com.sparta.user.service;
 
-import com.sparta.common.CustomException;
+import com.sparta.common.ApplicationException;
 import com.sparta.common.ErrorCode;
 import com.sparta.user.dto.UserRequestDto;
 import com.sparta.user.dto.UserResponseDto;
 import com.sparta.user.entity.User;
 import com.sparta.user.repository.UserRepository;
-import org.springframework.http.RequestEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,7 +49,7 @@ public class UserService {
 
     private User findUser(Long id) {
         return userRepository.findById(id).orElseThrow(
-                () -> new CustomException(ErrorCode.USER_NOT_FOUND)
+                () -> new ApplicationException(ErrorCode.USER_NOT_FOUND)
         );
     }
 }
