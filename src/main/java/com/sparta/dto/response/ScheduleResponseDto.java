@@ -1,0 +1,31 @@
+package com.sparta.dto.response;
+
+import com.sparta.entity.Schedule;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+
+// Client - Request/Response - Controller
+
+@Getter
+@Setter
+@RequiredArgsConstructor
+public class ScheduleResponseDto {
+    private Long id;
+    private Long userId;
+    private String title;
+    private String description;
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
+
+    public ScheduleResponseDto(Schedule schedule) {
+        this.id = schedule.getId();
+        this.userId = schedule.getUserId();
+        this.title = schedule.getTitle();
+        this.description = schedule.getDescription();
+        this.createdAt = schedule.getCreatedAt();
+        this.modifiedAt = schedule.getModifiedAt();
+    }
+}
