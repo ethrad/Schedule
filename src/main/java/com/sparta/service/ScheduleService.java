@@ -27,13 +27,14 @@ public class ScheduleService {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     public ScheduleResponseDto createSchedule(Long userId, ScheduleRequestDto requestDto) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new ApplicationException(ErrorCode.USER_NOT_FOUND)
         );
 
         Schedule schedule = new Schedule(requestDto);
-        user.addSchedule(schedule);
+        schedule.addUser(user);
 
         Schedule savedSchedule = scheduleRepository.save(schedule);
 
@@ -67,6 +68,7 @@ public class ScheduleService {
         scheduleRepository.delete(schedule);
     }
 
+    @Transactional
     public ScheduleResponseDto addUserToSchedule(Long id, Long userId) {
         Schedule schedule = findSchedule(id);
         User user = userRepository.findById(userId).orElseThrow(
@@ -74,7 +76,6 @@ public class ScheduleService {
         );
 
         schedule.addUser(user);
-        user.addSchedule(schedule);
 
         scheduleRepository.save(schedule);
         return new ScheduleResponseDto(schedule);

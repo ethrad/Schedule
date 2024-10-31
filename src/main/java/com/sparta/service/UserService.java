@@ -20,6 +20,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     public UserResponseDto createUser(UserRequestDto requestDto) {
         String email = requestDto.getEmail();
         Optional<User> checkEmail = userRepository.findByEmail(email);

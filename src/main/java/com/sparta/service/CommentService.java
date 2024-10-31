@@ -23,6 +23,7 @@ public class CommentService {
         this.scheduleRepository = scheduleRepository;
     }
 
+    @Transactional
     public CommentResponseDto createComment(Long scheduleId, CommentRequestDto requestDto) {
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
                 () -> new ApplicationException(ErrorCode.SCHEDULE_NOT_FOUND)
